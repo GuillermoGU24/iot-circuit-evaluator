@@ -1,8 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useConnections } from "../hooks/useConnections";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { projects, type ProjectId } from "../data/projects";
 import CircuitCanvas from "./CircuitsCanvas";
+import Page404 from "./Page404";
+import ReactDOM from "react-dom";
 
 export default function CircuitPage() {
   const { projectId } = useParams<{ projectId: ProjectId }>();
@@ -13,16 +15,13 @@ export default function CircuitPage() {
     handlePinClick,
     setSelectedWire,
     validateConnections,
+    clearWires
   } = useConnections();
 
   const [score, setScore] = useState<number | null>(null);
 
   if (!projectId || !projects[projectId]) {
-    return (
-      <div className="flex items-center justify-center h-screen text-xl font-bold">
-        Proyecto no encontrado 🚫
-      </div>
-    );
+    return <Page404 />;
   }
 
   const handleValidate = () => {
@@ -35,52 +34,80 @@ export default function CircuitPage() {
   };
 
   return (
-    <div className="flex flex-col w-full h-screen bg-gray-100">
-      <header className="bg-blue-600 text-white p-4 shadow-md">
-        <h1 className="text-2xl font-bold">{projects[projectId].name}</h1>
+    <div className="flex flex-col w-full h-screen bg-gradient-to-b from-gray-900 to-gray-700 font-['Press_Start_2P']">
+      {/* HEADER */}
+      <header className="bg-gray-800 text-gray-100 p-4 shadow-lg border-b-4 border-gray-600">
+        <h1 className="text-lg sm:text-xl font-bold text-center tracking-widest drop-shadow">
+          Simulador Chispa 🔌
+        </h1>
       </header>
-      <main className="flex-1 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg shadow-lg p-2">
+
+      {/* MAIN LAYOUT */}
+      <main className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4 p-4">
+        {/* Circuit container */}
+        <div className="flex items-center justify-center bg-white rounded-xl shadow-md border-4 border-gray-700 p-4">
           <CircuitCanvas
             wires={wires}
             selectedPin={selectedPin}
             selectedWire={selectedWire}
             handlePinClick={handlePinClick}
             setSelectedWire={setSelectedWire}
+            clearWires={clearWires}
           />
         </div>
-      </main>
-      <footer className="p-4 bg-gray-200 flex justify-center">
-        <button
-          onClick={handleValidate}
-          className="px-6 py-3 bg-green-500 hover:bg-green-600 rounded-xl text-white font-bold shadow-md transition"
-        >
-          Validar
-        </button>
-      </footer>
-      {score !== null && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40">
-          <div className="bg-white rounded-xl shadow-lg p-6 max-w-sm w-full text-center">
-            <h2 className="text-xl font-bold mb-4">Resultado</h2>
-            <p className="text-lg">
-              Tu puntaje es:{" "}
-              <span
-                className={`font-bold ${
-                  score === 100 ? "text-green-600" : "text-red-600"
-                }`}
-              >
-                {score}%
-              </span>
-            </p>
-            <button
-              onClick={() => setScore(null)}
-              className="mt-6 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-md"
-            >
-              Cerrar
-            </button>
-          </div>
+
+        {/* Info + actions */}
+        <div className="flex flex-col justify-center bg-gray-100 border-4 border-gray-600 rounded-xl shadow-md p-6 text-center space-y-6">
+          <h2 className="text-base text-blue-700">
+            ⚡ Validador de Circuitos ⚡
+          </h2>
+          <p className="text-xs text-gray-800 leading-relaxed">
+            Conecta correctamente los pines para completar el{" "}
+            <span className="text-gray-900 font-bold">
+              {projects[projectId].name}
+            </span>
+            . Cuando creas que está listo, pulsa el botón de validar.
+          </p>
+          <button
+            onClick={handleValidate}
+            className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow-md text-sm transition"
+          >
+            ▶ Validar
+          </button>
         </div>
-      )}
+      </main>
+
+      {/* FOOTER */}
+      <footer className="bg-gray-800 text-gray-300 text-center py-2 text-xs border-t-4 border-gray-600">
+        © 2025 Circuit Validator Arcade
+      </footer>
+
+      {/* RESULT MODAL */}
+      {score !== null &&
+        ReactDOM.createPortal(
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
+            <div className="bg-white border-4 border-gray-700 rounded-xl shadow-xl p-6 max-w-sm w-full text-center space-y-4">
+              <h2 className="text-base text-blue-700">🏆 Resultado 🏆</h2>
+              <p className="text-sm text-gray-800">
+                Tu puntaje es:{" "}
+                <span
+                  className={`font-bold ${
+                    score === 100 ? "text-green-600" : "text-red-600"
+                  }`}
+                >
+                  {score}%
+                </span>
+              </p>
+              <button
+                onClick={() => setScore(null)}
+                className="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded shadow-md text-xs transition"
+              >
+                OK
+              </button>
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 }

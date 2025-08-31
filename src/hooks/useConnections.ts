@@ -137,7 +137,7 @@ export function useConnections() {
     return score;
   };
 
-
+const clearWires = () => setWires([]);
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.key === "Delete" || e.key === "Backspace") && selectedWire) {
@@ -156,5 +156,6 @@ export function useConnections() {
     handlePinClick,
     setSelectedWire,
     validateConnections,
+    clearWires,
   };
 }

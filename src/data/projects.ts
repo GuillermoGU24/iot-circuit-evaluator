@@ -6,6 +6,7 @@ export const projects = {
       { from: "RES1", to: "LED1_ANODO(+)" }, // Coincide con ledPins
       { from: "LED1_CATODO(-)", to: "GND" }, // Coincide con ledPins
     ],
+    description: "Un proyecto básico para encender un LED utilizando una resistencia.",
   },
 };
 
