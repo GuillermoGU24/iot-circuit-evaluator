@@ -15,7 +15,7 @@ export default function CircuitPage() {
     handlePinClick,
     setSelectedWire,
     validateConnections,
-    clearWires
+    clearWires,
   } = useConnections();
 
   const [score, setScore] = useState<number | null>(null);
@@ -61,25 +61,35 @@ export default function CircuitPage() {
           <h2 className="text-base text-blue-700">
             ⚡ Validador de Circuitos ⚡
           </h2>
-          <p className="text-xs text-gray-800 leading-relaxed">
-            Conecta correctamente los pines para completar el{" "}
-            <span className="text-gray-900 font-bold">
-              {projects[projectId].name}
-            </span>
-            . Cuando creas que está listo, pulsa el botón de validar.
-          </p>
-          <button
-            onClick={handleValidate}
-            className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow-md text-sm transition"
-          >
-            ▶ Validar
-          </button>
+          <div className="text-gray-800 text-sm leading-relaxed space-y-2 text-justify">
+            <h2 className="text-base font-semibold text-gray-900">
+              Proyecto:{" "}
+              <span className="font-bold">{projects[projectId].name}</span>
+            </h2>
+
+            <p className="text-gray-700">
+              <br />
+              {projects[projectId].description}
+            </p>
+            <p className="text-gray-700">
+              <br /> Cuando creas que está listo, pulsa el botón de validar.
+            </p>
+          </div>
+
+          <div className="flex justify-center">
+            <button
+              onClick={handleValidate}
+              className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow-md text-sm transition "
+            >
+              ▶ Validar
+            </button>
+          </div>
         </div>
       </main>
 
       {/* FOOTER */}
       <footer className="bg-gray-800 text-gray-300 text-center py-2 text-xs border-t-4 border-gray-600">
-        © 2025 Circuit Validator Arcade
+        © 2025 Circuit Validator Chispa ⚡
       </footer>
 
       {/* RESULT MODAL */}
