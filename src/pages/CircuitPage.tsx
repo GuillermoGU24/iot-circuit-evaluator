@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { useConnections } from "../hooks/useConnections";
 import { useState } from "react";
 import { projects, type ProjectId } from "../data/projects";
@@ -8,6 +8,7 @@ import ReactDOM from "react-dom";
 
 export default function CircuitPage() {
   const { projectId } = useParams<{ projectId: ProjectId }>();
+  const location = useLocation();
   const {
     wires,
     selectedPin,
@@ -24,13 +25,49 @@ export default function CircuitPage() {
     return <Page404 />;
   }
 
-  const handleValidate = () => {
+  // 👉 Función para extraer el token de la URL
+  const getTokenFromUrl = () => {
+    const params = new URLSearchParams(location.search);
+    return params.get("token");
+  };
+
+  const handleValidate = async () => {
     if (wires.length < projects[projectId].correctConnections.length) {
       alert("⚠️ Faltan conexiones por completar");
       return;
     }
+
     const result = validateConnections(projectId);
     setScore(result);
+
+    const token = getTokenFromUrl();
+    if (token) {
+      try {
+        const response = await fetch(
+          "http://pruebamoodle-production.up.railway.app/calificar_moodle",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              token: token,
+              nota: result / 100,
+            }),
+          }
+        );
+
+        if (!response.ok) {
+          console.error("❌ Error al enviar la nota:", response.statusText);
+        } else {
+          console.log("✅ Nota enviada correctamente");
+        }
+      } catch (error) {
+        console.error("❌ Error en la petición:", error);
+      }
+    } else {
+      console.warn("⚠️ No se encontró el token en la URL");
+    }
   };
 
   return (
