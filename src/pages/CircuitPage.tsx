@@ -44,7 +44,7 @@ export default function CircuitPage() {
     if (token) {
       try {
         const response = await fetch(
-          "http://pruebamoodle-production.up.railway.app/calificar_moodle",
+          "http://pruebamoodle-production.up.railway.app/api/calificar_moodle",
           {
             method: "POST",
             headers: {
