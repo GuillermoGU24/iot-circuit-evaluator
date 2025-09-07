@@ -84,6 +84,7 @@ export default function CircuitPage() {
         {/* Circuit container */}
         <div className="flex items-center justify-center bg-white rounded-xl shadow-md border-4 border-gray-700 p-4">
           <CircuitCanvas
+            projectId={projectId}
             wires={wires}
             selectedPin={selectedPin}
             selectedWire={selectedWire}

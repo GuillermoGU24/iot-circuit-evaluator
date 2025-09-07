@@ -1,13 +1,50 @@
 export const projects = {
   "led-basic": {
     name: "Hola Mundo",
+    description:
+      "Construir el circuito introductorio “Hola Mundo” en Arduino, conectando un diodo LED a la placa Arduino UNO mediante una resistencia de protección. El cátodo del LED debe ir a tierra (GND) y el ánodo, a través de la resistencia, al pin digital 13.",
+    components: [
+      {
+        type: "ArduinoUno",
+        id: "ARDUINO1",
+        x: 0.5,
+        y: 0.1,
+      },
+      {
+        type: "Resistor",
+        id: "RES1",
+        x: 0.65,
+        y: 0.15,
+      },
+      {
+        type: "Led",
+        id: "LED1",
+        x: 0.75,
+        y: 0.35,
+      },
+    ],
     correctConnections: [
       { from: "D13", to: "RES1" },
       { from: "RES1", to: "LED1_ANODO(+)" },
       { from: "LED1_CATODO(-)", to: "GND" },
     ],
-    description:
-      "Construir el circuito introductorio “Hola Mundo” en Arduino, conectando un diodo LED a la placa Arduino UNO mediante una resistencia de protección. El cátodo del LED debe ir a tierra (GND) y el ánodo, a través de la resistencia, al pin digital 13.",
+  },
+  "otro-proyecto": {
+    name: "Sensor de Temperatura",
+    description: "Conectar un sensor LM35 al Arduino UNO...",
+    components: [
+      {
+        type: "ArduinoUno",
+        id: "ARDUINO1",
+        x: 0.5,
+        y: 0.1,
+      },
+    ],
+    correctConnections: [
+      { from: "TEMP1_VOUT", to: "A0" },
+      { from: "TEMP1_VCC", to: "5V" },
+      { from: "TEMP1_GND", to: "GND" },
+    ],
   },
 };
 

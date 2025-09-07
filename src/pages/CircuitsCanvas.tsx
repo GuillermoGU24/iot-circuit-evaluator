@@ -1,21 +1,33 @@
 import { useRef, useState, useEffect } from "react";
 import { Stage, Layer, Line } from "react-konva";
-import Led from "../components/electronics/Led";
-import Resistor from "../components/electronics/Resistor";
-import ArduinoUno from "../components/electronics/ArduinoUno";
-import { arduinoUnoPins, ledPins, resistorPins, type Pin } from "../data/pin";
 import { getPinPosition } from "../utils/getPinPosition";
+import { projects, type ProjectId } from "../data/projects";
+
+// Importa tus componentes electrónicos
+import ArduinoUno from "../components/electronics/ArduinoUno";
+import Resistor from "../components/electronics/Resistor";
+import Led from "../components/electronics/Led";
+// Ejemplo: un nuevo componente
 
 interface CircuitCanvasProps {
-  wires: { id: string; from: Pin; to: Pin; color: string }[];
-  selectedPin: Pin | null;
+  projectId: ProjectId;
+  wires: { id: string; from: any; to: any; color: string }[];
+  selectedPin: any | null;
   selectedWire: string | null;
-  handlePinClick: (pin: Pin) => void;
+  handlePinClick: (pin: any) => void;
   setSelectedWire: (id: string | null) => void;
   clearWires: () => void;
 }
 
+// 🔹 Registro dinámico de componentes
+const componentRegistry: Record<string, React.FC<any>> = {
+  ArduinoUno,
+  Resistor,
+  Led,
+};
+
 export default function CircuitCanvas({
+  projectId,
   wires,
   selectedPin,
   selectedWire,
@@ -28,7 +40,6 @@ export default function CircuitCanvas({
 
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 });
   const [scale, setScale] = useState(1);
-
 
   // ResizeObserver para responsividad
   useEffect(() => {
@@ -121,38 +132,27 @@ export default function CircuitCanvas({
           className="rounded-2xl relative z-10"
         >
           <Layer>
-            {/* --- Componentes electrónicos --- */}
-            <ArduinoUno
-              x={dimensions.width * 0.5}
-              y={dimensions.height * 0.1}
-              onPinClick={handlePinClick}
-              selectedPin={selectedPin}
-              wires={wires}
-              selectedWire={selectedWire}
-              setSelectedWire={setSelectedWire}
-            />
-            <Resistor
-              x={dimensions.width * 0.65}
-              y={dimensions.height * 0.15}
-              id="RES1"
-              selectedPin={selectedPin}
-              onPinClick={handlePinClick}
-              wires={wires}
-              selectedWire={selectedWire}
-              setSelectedWire={setSelectedWire}
-            />
-            <Led
-              x={dimensions.width * 0.75}
-              y={dimensions.height * 0.35}
-              id="LED1"
-              selectedPin={selectedPin}
-              onPinClick={handlePinClick}
-              wires={wires}
-              selectedWire={selectedWire}
-              setSelectedWire={setSelectedWire}
-            />
+            {/* --- Renderizado dinámico de componentes --- */}
+            {projects[projectId].components.map((comp) => {
+              const Comp = componentRegistry[comp.type];
+              if (!Comp) return null;
 
-            {/* --- Dibujar cables con posiciones dinámicas --- */}
+              return (
+                <Comp
+                  key={comp.id}
+                  id={comp.id}
+                  x={dimensions.width * comp.x}
+                  y={dimensions.height * comp.y}
+                  selectedPin={selectedPin}
+                  onPinClick={handlePinClick}
+                  wires={wires}
+                  selectedWire={selectedWire}
+                  setSelectedWire={setSelectedWire}
+                />
+              );
+            })}
+
+            {/* --- Dibujar cables --- */}
             {wires.map((wire) => {
               const fromPos = getPinPosition(wire.from, dimensions);
               const toPos = getPinPosition(wire.to, dimensions);
