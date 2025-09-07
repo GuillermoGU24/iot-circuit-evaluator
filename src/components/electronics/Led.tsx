@@ -1,4 +1,3 @@
-// En Led.tsx
 import { Group, Text, Image as KonvaImage } from "react-konva";
 import { ledPins, type Pin } from "../../data/pin";
 import PinView from "../PinView";
@@ -39,8 +38,9 @@ export default function Led({ x, y, id, selectedPin, onPinClick }: LedProps) {
           onClick={(clickedPin) =>
             onPinClick({
               ...clickedPin,
-              x: clickedPin.x + x,
-              y: clickedPin.y + y,
+              componentId: "LED1",
+              x: clickedPin.x,
+              y: clickedPin.y,
             })
           }
         />

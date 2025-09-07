@@ -2,7 +2,7 @@ import { Group, Image as KonvaImage } from "react-konva";
 import { arduinoUnoPins, type Pin } from "../../data/pin";
 import PinView from "../PinView";
 import useImage from "use-image";
-import  arduinoi from "../../assets/arduino.webp";
+import arduinoi from "../../assets/arduino.webp";
 
 interface ArduinoUnoProps {
   x: number;
@@ -20,11 +20,10 @@ export default function ArduinoUno({
   onPinClick,
   selectedPin,
 }: ArduinoUnoProps) {
-  const [image] = useImage(arduinoi); // Reemplaza con tu URL de imagen PNG transparente
+  const [image] = useImage(arduinoi);
 
   return (
     <Group x={x} y={y}>
-      {/* Imagen base del Arduino Uno */}
       <KonvaImage
         image={image}
         width={350}
@@ -35,7 +34,6 @@ export default function ArduinoUno({
         shadowOffset={{ x: 2, y: 2 }}
       />
 
-      {/* Pines superpuestos sobre la imagen */}
       {arduinoUnoPins.map((pin) => (
         <PinView
           key={pin.id}
@@ -44,8 +42,9 @@ export default function ArduinoUno({
           onClick={(clickedPin) =>
             onPinClick({
               ...clickedPin,
-              x: clickedPin.x + x,
-              y: clickedPin.y + y,
+              componentId: "ARDUINO",
+              x: clickedPin.x,
+              y: clickedPin.y,
             })
           }
         />

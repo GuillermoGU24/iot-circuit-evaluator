@@ -3,7 +3,8 @@ import { Stage, Layer, Line } from "react-konva";
 import Led from "../components/electronics/Led";
 import Resistor from "../components/electronics/Resistor";
 import ArduinoUno from "../components/electronics/ArduinoUno";
-import type { Pin } from "../data/pin";
+import { arduinoUnoPins, ledPins, resistorPins, type Pin } from "../data/pin";
+import { getPinPosition } from "../utils/getPinPosition";
 
 interface CircuitCanvasProps {
   wires: { id: string; from: Pin; to: Pin; color: string }[];
@@ -28,6 +29,7 @@ export default function CircuitCanvas({
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 });
   const [scale, setScale] = useState(1);
 
+
   // ResizeObserver para responsividad
   useEffect(() => {
     const observer = new ResizeObserver((entries) => {
@@ -51,13 +53,12 @@ export default function CircuitCanvas({
     const oldScale = stage.scaleX();
 
     const pointer = stage.getPointerPosition();
-    const scaleBy = 1.1; // velocidad del zoom
+    const scaleBy = 1.1;
     const newScale = e.evt.deltaY > 0 ? oldScale / scaleBy : oldScale * scaleBy;
 
     zoomAtPointer(stage, oldScale, newScale, pointer);
   };
 
-  // Zoom centrado en un punto
   const zoomAtPointer = (
     stage: any,
     oldScale: number,
@@ -80,7 +81,6 @@ export default function CircuitCanvas({
     stage.batchDraw();
   };
 
-  // Zoom manual con botones
   const handleZoom = (zoomIn: boolean) => {
     const stage = stageRef.current;
     const oldScale = stage.scaleX();
@@ -95,7 +95,6 @@ export default function CircuitCanvas({
     zoomAtPointer(stage, oldScale, newScale, center);
   };
 
-  // Reset de posición y zoom
   const handleReset = () => {
     const stage = stageRef.current;
     stage.scale({ x: 1, y: 1 });
@@ -153,20 +152,25 @@ export default function CircuitCanvas({
               setSelectedWire={setSelectedWire}
             />
 
-            {/* --- Dibujar cables --- */}
-            {wires.map((wire) => (
-              <Line
-                key={wire.id}
-                points={[wire.from.x, wire.from.y, wire.to.x, wire.to.y]}
-                stroke={wire.color}
-                strokeWidth={3}
-                onClick={() => setSelectedWire(wire.id)}
-                shadowBlur={selectedWire === wire.id ? 10 : 0}
-                shadowColor={wire.color}
-                opacity={selectedWire === wire.id ? 1 : 0.9}
-                perfectDrawEnabled={false}
-              />
-            ))}
+            {/* --- Dibujar cables con posiciones dinámicas --- */}
+            {wires.map((wire) => {
+              const fromPos = getPinPosition(wire.from, dimensions);
+              const toPos = getPinPosition(wire.to, dimensions);
+
+              return (
+                <Line
+                  key={wire.id}
+                  points={[fromPos.x, fromPos.y, toPos.x, toPos.y]}
+                  stroke={wire.color}
+                  strokeWidth={3}
+                  onClick={() => setSelectedWire(wire.id)}
+                  shadowBlur={selectedWire === wire.id ? 10 : 0}
+                  shadowColor={wire.color}
+                  opacity={selectedWire === wire.id ? 1 : 0.9}
+                  perfectDrawEnabled={false}
+                />
+              );
+            })}
           </Layer>
         </Stage>
 
@@ -186,13 +190,13 @@ export default function CircuitCanvas({
           </button>
           <button
             onClick={handleReset}
-            className="bg-blue-600 text-white w-10 h-10 rounded-lg shadow-md flex items-center justify-center hover:bg-blue-500  cursor-pointer"
+            className="bg-blue-600 text-white w-10 h-10 rounded-lg shadow-md flex items-center justify-center hover:bg-blue-500 cursor-pointer"
           >
             ⟳
           </button>
           <button
             onClick={clearWires}
-            className="bg-red-600 text-white w-10 h-10 rounded-lg shadow-md flex items-center justify-center hover:bg-red-500  cursor-pointer"
+            className="bg-red-600 text-white w-10 h-10 rounded-lg shadow-md flex items-center justify-center hover:bg-red-500 cursor-pointer"
           >
             🗑️
           </button>

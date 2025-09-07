@@ -1,10 +1,8 @@
-// En Resistor.tsx
-import { Group, Image as KonvaImage ,Text } from "react-konva";
+import { Group, Image as KonvaImage, Text } from "react-konva";
 import { resistorPins, type Pin } from "../../data/pin";
 import PinView from "../PinView";
 import resistencia from "../../assets/resistencia.webp";
 import useImage from "use-image";
-
 
 interface ResistorProps {
   x: number;
@@ -24,7 +22,7 @@ export default function Resistor({
   selectedPin,
   onPinClick,
 }: ResistorProps) {
-  const [image] = useImage(resistencia); // Reemplaza con tu URL de imagen PNG transparente
+  const [image] = useImage(resistencia);
 
   return (
     <Group x={x} y={y}>
@@ -47,8 +45,9 @@ export default function Resistor({
           onClick={(clickedPin) =>
             onPinClick({
               ...clickedPin,
-              x: clickedPin.x + x,
-              y: clickedPin.y + y,
+              componentId: "RES1",
+              x: clickedPin.x,
+              y: clickedPin.y,
             })
           }
         />

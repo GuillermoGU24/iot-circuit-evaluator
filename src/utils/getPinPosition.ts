@@ -1,11 +1,29 @@
-import { arduinoUnoPins } from "../data/pin";
+// 📌 Tabla con offsets base de cada componente
+const COMPONENT_BASE_OFFSETS: Record<
+  string,
+  (dimensions: { width: number; height: number }) => { x: number; y: number }
+> = {
+  ARDUINO: (d) => ({ x: d.width * 0.5, y: d.height * 0.1 }),
+  RES1: (d) => ({ x: d.width * 0.65, y: d.height * 0.15 }),
+  LED1: (d) => ({ x: d.width * 0.75, y: d.height * 0.35 }),
+  // 👇 Aquí puedes ir agregando más componentes fácilmente
+  // MOTOR1: (d) => ({ x: d.width * 0.3, y: d.height * 0.5 }),
+  // DISPLAY1: (d) => ({ x: d.width * 0.2, y: d.height * 0.2 }),
+};
 
-
-export function getPinPosition(pinId: string): { x: number; y: number } {
-  const pin = arduinoUnoPins.find((p) => p.id === pinId);
-  if (!pin) {
-    console.warn(`⚠️ Pin no encontrado: ${pinId}`);
-    return { x: 0, y: 0 }; // fallback
+export function getPinPosition(
+  pin: { id: string; componentId: string; x: number; y: number },
+  dimensions: { width: number; height: number }
+) {
+  const baseFn = COMPONENT_BASE_OFFSETS[pin.componentId];
+  if (!baseFn) {
+    console.warn(`⚠️ No se encontró offset base para ${pin.componentId}`);
+    return { x: pin.x, y: pin.y };
   }
-  return { x: pin.x, y: pin.y };
+
+  const base = baseFn(dimensions);
+  return {
+    x: base.x + pin.x,
+    y: base.y + pin.y,
+  };
 }
