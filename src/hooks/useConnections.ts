@@ -48,8 +48,8 @@ export function useConnections() {
     const normalized = pinId.trim().toUpperCase();
     return !["VCC5V", "5V", "+5V", "GND"].includes(normalized);
   };
+
   const isPinUsed = (pinId: string) => {
-    // Si no es exclusivo, puede tener varias conexiones
     if (!isExclusivePin(pinId)) return false;
     return wires.some((w) => w.from.id === pinId || w.to.id === pinId);
   };
@@ -78,7 +78,6 @@ export function useConnections() {
           to: pin,
           color: colors[colorIndex % colors.length],
         };
-        console.log("Nuevo cable creado:", newWire); // Depuración
         setWires((prev) => [...prev, newWire]);
         setColorIndex((i) => i + 1);
       }
@@ -93,13 +92,13 @@ export function useConnections() {
       return { score: 0, correct: [], incorrect: [] };
     }
 
-    console.log("🔍 Validando wires:", wires);
-    console.log(
-      "✅ Conexiones correctas esperadas:",
-      project.correctConnections
+    const ignoredPins = project.ignoredPins || [];
+
+    const totalConnections = project.correctConnections.filter(
+      (c) => !ignoredPins.includes(c.from) && !ignoredPins.includes(c.to)
     );
 
-    const total = project.correctConnections.length;
+    const total = totalConnections.length;
     const correctConnections: CorrectConnection[] = [];
     const incorrectConnections: CorrectConnection[] = [];
 
@@ -114,7 +113,7 @@ export function useConnections() {
       RESISTOR_PINS.map(normalize).includes(normalize(pinId)) ||
       normalize(pinId) === "RES1";
 
-    project.correctConnections.forEach((c: CorrectConnection) => {
+    totalConnections.forEach((c: CorrectConnection) => {
       const exists = wires.some((w) => {
         const fromId = normalize(w.from.id);
         const toId = normalize(w.to.id);
@@ -145,19 +144,13 @@ export function useConnections() {
       });
 
       if (exists) {
-        console.log(`✅ Conexión correcta encontrada: ${c.from} -> ${c.to}`);
         correctConnections.push(c);
       } else {
-        console.log(`❌ No se encontró conexión: ${c.from} -> ${c.to}`);
         incorrectConnections.push(c);
       }
     });
 
     const score = Math.round((correctConnections.length / total) * 100);
-
-    console.log(
-      `Puntaje calculado: ${score}% (correctas: ${correctConnections.length}/${total})`
-    );
 
     return {
       score,
@@ -166,8 +159,8 @@ export function useConnections() {
     };
   };
 
+  const clearWires = () => setWires([]);
 
-const clearWires = () => setWires([]);
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.key === "Delete" || e.key === "Backspace") && selectedWire) {

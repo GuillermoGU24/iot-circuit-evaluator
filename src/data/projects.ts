@@ -1,12 +1,12 @@
-export const projects = {
+export const projects: Record<string, Project> = {
   "led-basic": {
     name: "Hola Mundo",
     description:
       "Construir el circuito introductorio “Hola Mundo” en Arduino, conectando un diodo LED a la placa Arduino UNO mediante una resistencia de protección. El cátodo del LED debe ir a tierra (GND) y el ánodo, a través de la resistencia, al pin digital 13.",
     components: [
       {
-        type: "ArduinoUno",
-        id: "ARDUINO",
+        type: "ArduinoUno", // Componente de la placa Arduino UNO
+        id: "ARDUINO", // Identificador único del componente
         x: 0.5,
         y: 0.1,
       },
@@ -63,6 +63,64 @@ export const projects = {
       { from: "i2c_SDA", to: "A4" },
     ],
   },
+  "bombillo-programable": {
+    name: "Bombillo Programable",
+    description: "Conectar un bombillo programable al Arduino UNO...",
+    components: [
+      {
+        type: "ArduinoUno",
+        id: "ARDUINO3",
+        x: 0.4,
+        y: 0.4,
+      },
+      {
+        type: "Bombillo",
+        id: "BOMBILLO",
+        x: 0.7,
+        y: 0.0,
+      },
+      {
+        type: "Rele",
+        id: "RELE",
+        x: 0.6,
+        y: 0.6,
+      },
+      {
+        type: "HC06",
+        id: "HC06",
+        x: 0.2,
+        y: 0.2,
+      },
+      {
+        type: "Toma",
+        id: "TOMA",
+        x: 1,
+        y: 0.6,
+      },
+    ],
+    correctConnections: [
+      { from: "H_TXD", to: "D3" },
+      { from: "H_RXD", to: "D2" },
+      { from: "H_VCC", to: "5V" },
+      { from: "H_GND", to: "GND" },
+      { from: "R_IN", to: "D9" },
+      { from: "R_VCC", to: "5V" },
+      { from: "R_GND", to: "GND" },
+      { from: "R_NO", to: "B_VCC" },
+      { from: "R_COM", to: "T_VCC" },
+      { from: "T_GND", to: "B_GND" },
+    ],
+    ignoredPins: ["R_NC"],
+  },
+};
+
+
+export type Project = {
+  name: string;
+  description: string;
+  components: { type: string; id: string; x: number; y: number }[];
+  correctConnections: CorrectConnection[];
+  ignoredPins?: string[];
 };
 
 export type ProjectId = keyof typeof projects;

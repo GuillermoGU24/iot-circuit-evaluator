@@ -72,3 +72,30 @@ export const HSR04Pins: Pin[] = [
   { id: "HSR04_ECHO", x: 180, y: 220, componentId: "HSR04" },
   { id: "HSR04_GND", x: 195, y: 220, componentId: "HSR04" },
 ];
+
+export const BombilloPins: Pin[] = [
+  { id: "B_GND", x: 99, y: 190, componentId: "BOMBILLO" },
+  { id: "B_VCC", x: 48, y: 190, componentId: "BOMBILLO" },
+];
+
+export const RelePins: Pin[] = [
+  { id: "R_VCC", x: 40, y: 78, componentId: "RELE" },
+  { id: "R_GND", x: 40, y: 96, componentId: "RELE" },
+  { id: "R_IN", x: 40, y: 111, componentId: "RELE" },
+  { id: "R_NO", x: 265, y: 130, componentId: "RELE" },
+  { id: "R_COM", x: 265, y: 95, componentId: "RELE" },
+  { id: "R_NC", x: 265, y: 59, componentId: "RELE" },
+];
+
+export const HC06Pins: Pin[] = [
+  { id: "H_RXD", x: 78, y: -15, componentId: "HC06" },
+  { id: "H_TXD", x: 92, y: -15, componentId: "HC06" },
+  { id: "H_VCC", x: 122, y: -15, componentId: "HC06" },
+  { id: "H_GND", x: 107, y: -15, componentId: "HC06" },
+];
+
+
+export const TomaPins: Pin[] = [
+  { id: "T_VCC", x: 90, y: -91, componentId: "TOMA" },
+  { id: "T_GND", x: 90, y: -110, componentId: "TOMA" },
+];

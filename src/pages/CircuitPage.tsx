@@ -2,7 +2,7 @@
 import { useParams, useLocation } from "react-router-dom";
 import { useConnections } from "../hooks/useConnections";
 import { useState } from "react";
-import { projects, type ProjectId } from "../data/projects";
+import { projects, type Project, type ProjectId } from "../data/projects";
 import CircuitCanvas from "./CircuitsCanvas";
 import Page404 from "./Page404";
 import ReactDOM from "react-dom";
@@ -40,18 +40,31 @@ export default function CircuitPage() {
     return params.get("token");
   };
 
-  const handleValidate = () => {
-    if (wires.length < projects[projectId].correctConnections.length) {
-      alert("⚠️ Faltan conexiones por completar");
-      return;
-    }
+const handleValidate = () => {
+  const project = projects[projectId]!;
+  const ignoredPins = project.ignoredPins ?? [];
+  const totalConnections = project.correctConnections.filter(
+    (c) => !ignoredPins.includes(c.from) && !ignoredPins.includes(c.to)
+  );
 
-    const result = validateConnections(projectId);
-    // 👉 aquí asumo que validateConnections puede devolver más detalle
-    // si solo devuelve el score, deberíamos ajustarlo
-    setValidationResult(result);
-    setShowConfirm(true);
-  };
+  console.log("👉 wires:", wires);
+  console.log("👉 totalConnections:", totalConnections);
+  console.log(
+    "👉 wires.length:",
+    wires.length,
+    " totalConnections.length:",
+    totalConnections.length
+  );
+
+  if (wires.length < totalConnections.length) {
+    alert("⚠️ Faltan conexiones por completar");
+    return;
+  }
+
+  const result = validateConnections(projectId);
+  setValidationResult(result);
+  setShowConfirm(true);
+};
 
   const handleFinish = async () => {
     if (!validationResult) return;
