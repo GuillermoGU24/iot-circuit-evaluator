@@ -14,10 +14,10 @@ export default function PinView({ pin, onClick, selected }: Props) {
   return (
     <>
       <Rect
-        x={pin.x - (selected ? 7 : 6) / 2} // Para centrar el cuadrado
-        y={pin.y - (selected ? 7 : 6) / 2}
-        width={selected ? 8 : 7}
-        height={selected ? 8 : 7}
+        x={pin.x - (selected ? 6 : 5) / 2} // Para centrar el cuadrado
+        y={pin.y - (selected ? 6 : 5) / 2}
+        width={selected ? 7 : 6}
+        height={selected ? 7 : 6}
         fill={selected ? "yellow" : "black"}
         stroke="gray"
         strokeWidth={1}

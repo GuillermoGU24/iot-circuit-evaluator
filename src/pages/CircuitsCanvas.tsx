@@ -163,6 +163,8 @@ export default function CircuitCanvas({
                   key={wire.id}
                   points={[fromPos.x, fromPos.y, toPos.x, toPos.y]}
                   stroke={wire.color}
+                  lineCap="round"
+                  lineJoin="round"
                   strokeWidth={selectedWire === wire.id ? 5 : 3} // base + cuando esté seleccionado
                   onClick={() => setSelectedWire(wire.id)}
                   shadowBlur={selectedWire === wire.id ? 10 : 0}
