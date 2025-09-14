@@ -6,7 +6,7 @@ export const projects = {
     components: [
       {
         type: "ArduinoUno",
-        id: "ARDUINO1",
+        id: "ARDUINO",
         x: 0.5,
         y: 0.1,
       },
@@ -29,21 +29,38 @@ export const projects = {
       { from: "LED1_CATODO(-)", to: "GND" },
     ],
   },
-  "otro-proyecto": {
-    name: "Sensor de Temperatura",
+  "metro-i2c": {
+    name: "Metro Con Pantalla I2C",
     description: "Conectar un sensor LM35 al Arduino UNO...",
     components: [
       {
         type: "ArduinoUno",
-        id: "ARDUINO1",
-        x: 0.5,
+        id: "ARDUINO2",
+        x: 0.8,
         y: 0.1,
+      },
+      {
+        type: "i2cPantalla",
+        id: "I2CPANTALLA",
+        x: 0.27,
+        y: 0.6,
+      },
+      {
+        type: "HSR04",
+        id: "HSR04",
+        x: 0.6,
+        y: -0.3,
       },
     ],
     correctConnections: [
-      { from: "TEMP1_VOUT", to: "A0" },
-      { from: "TEMP1_VCC", to: "5V" },
-      { from: "TEMP1_GND", to: "GND" },
+      { from: "HSR04_VCC", to: "5V" },
+      { from: "HSR04_GND", to: "GND" },
+      { from: "HSR04_TRIG", to: "D10" },
+      { from: "HSR04_ECHO", to: "D9" },
+      { from: "i2c_VCC", to: "5V" },
+      { from: "i2c_GND", to: "GND" },
+      { from: "i2c_SCL", to: "A5" },
+      { from: "i2c_SDA", to: "A4" },
     ],
   },
 };

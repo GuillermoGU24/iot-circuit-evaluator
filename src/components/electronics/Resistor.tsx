@@ -45,7 +45,7 @@ export default function Resistor({
           onClick={(clickedPin) =>
             onPinClick({
               ...clickedPin,
-              componentId: "RES1",
+              componentId: id,
               x: clickedPin.x,
               y: clickedPin.y,
             })

@@ -7,6 +7,7 @@ import arduinoi from "../../assets/arduino.webp";
 interface ArduinoUnoProps {
   x: number;
   y: number;
+  id: string;
   onPinClick: (pin: Pin) => void;
   selectedPin: Pin | null;
   wires: { id: string; from: Pin; to: Pin; color: string }[];
@@ -19,6 +20,7 @@ export default function ArduinoUno({
   y,
   onPinClick,
   selectedPin,
+  id,
 }: ArduinoUnoProps) {
   const [image] = useImage(arduinoi);
 
@@ -42,7 +44,7 @@ export default function ArduinoUno({
           onClick={(clickedPin) =>
             onPinClick({
               ...clickedPin,
-              componentId: "ARDUINO",
+              componentId: id,
               x: clickedPin.x,
               y: clickedPin.y,
             })

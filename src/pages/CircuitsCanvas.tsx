@@ -8,6 +8,8 @@ import ArduinoUno from "../components/electronics/ArduinoUno";
 import Resistor from "../components/electronics/Resistor";
 import Led from "../components/electronics/Led";
 import type Konva from "konva";
+import i2cPantalla from "../components/electronics/I2CPantalla";
+import HSR04 from "../components/electronics/HSR04";
 // Ejemplo: un nuevo componente
 
 interface CircuitCanvasProps {
@@ -25,6 +27,8 @@ const componentRegistry: Record<string, React.FC<any>> = {
   ArduinoUno,
   Resistor,
   Led,
+  i2cPantalla,
+  HSR04,
 };
 
 export default function CircuitCanvas({

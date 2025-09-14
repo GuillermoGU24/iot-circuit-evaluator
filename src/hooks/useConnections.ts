@@ -8,7 +8,31 @@ import type { Pin } from "../data/pin";
 
 type Wire = { id: string; from: Pin; to: Pin; color: string };
 
-const colors = ["red", "blue", "green", "orange", "purple"];
+const colors = [
+  "red",
+  "blue",
+  "green",
+  "orange",
+  "purple",
+  "brown",
+  "cyan",
+  "magenta",
+  "lime",
+  "teal",
+  "indigo",
+  "violet",
+  "gold",
+  "salmon",
+  "chocolate",
+  "coral",
+  "crimson",
+  "turquoise",
+  "navy",
+  "olive",
+  "maroon",
+  "orchid",
+  "plum",
+];
 
 // Lista de pines equivalentes
 const GND_PINS = ["GND1", "GND2", "GND3"];
@@ -20,8 +44,15 @@ export function useConnections() {
   const [colorIndex, setColorIndex] = useState(0);
   const [selectedWire, setSelectedWire] = useState<string | null>(null);
 
-  const isPinUsed = (pinId: string) =>
-    wires.some((w) => w.from.id === pinId || w.to.id === pinId);
+  const isExclusivePin = (pinId: string) => {
+    const normalized = pinId.trim().toUpperCase();
+    return !["VCC5V", "5V", "+5V", "GND"].includes(normalized);
+  };
+  const isPinUsed = (pinId: string) => {
+    // Si no es exclusivo, puede tener varias conexiones
+    if (!isExclusivePin(pinId)) return false;
+    return wires.some((w) => w.from.id === pinId || w.to.id === pinId);
+  };
 
   const handlePinClick = (pin: Pin) => {
     if (isPinUsed(pin.id)) {

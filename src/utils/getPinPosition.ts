@@ -6,6 +6,9 @@ const COMPONENT_BASE_OFFSETS: Record<
   ARDUINO: (d) => ({ x: d.width * 0.5, y: d.height * 0.1 }),
   RES1: (d) => ({ x: d.width * 0.65, y: d.height * 0.15 }),
   LED1: (d) => ({ x: d.width * 0.75, y: d.height * 0.35 }),
+  I2CPANTALLA: (d) => ({ x: d.width * 0.27, y: d.height * 0.6 }),
+  HSR04: (d) => ({ x: d.width * 0.6, y: d.height * -0.3 }),
+  ARDUINO2: (d) => ({ x: d.width * 0.8, y: d.height * 0.1 }),
   // 👇 Aquí puedes ir agregando más componentes fácilmente
   // MOTOR1: (d) => ({ x: d.width * 0.3, y: d.height * 0.5 }),
   // DISPLAY1: (d) => ({ x: d.width * 0.2, y: d.height * 0.2 }),
