@@ -7,6 +7,7 @@ import { projects, type ProjectId } from "../data/projects";
 import ArduinoUno from "../components/electronics/ArduinoUno";
 import Resistor from "../components/electronics/Resistor";
 import Led from "../components/electronics/Led";
+import type Konva from "konva";
 // Ejemplo: un nuevo componente
 
 interface CircuitCanvasProps {
@@ -162,12 +163,26 @@ export default function CircuitCanvas({
                   key={wire.id}
                   points={[fromPos.x, fromPos.y, toPos.x, toPos.y]}
                   stroke={wire.color}
-                  strokeWidth={3}
+                  strokeWidth={selectedWire === wire.id ? 5 : 3} // base + cuando esté seleccionado
                   onClick={() => setSelectedWire(wire.id)}
                   shadowBlur={selectedWire === wire.id ? 10 : 0}
                   shadowColor={wire.color}
                   opacity={selectedWire === wire.id ? 1 : 0.9}
                   perfectDrawEnabled={false}
+                  onMouseEnter={(e) => {
+                    const stage = e.target.getStage();
+                    if (stage) stage.container().style.cursor = "pointer";
+                    const line = e.target as Konva.Line; // 👈 casteo
+                    line.strokeWidth(5);
+                    line.getLayer()?.batchDraw();
+                  }}
+                  onMouseLeave={(e) => {
+                    const stage = e.target.getStage();
+                    if (stage) stage.container().style.cursor = "default";
+                    const line = e.target as Konva.Line; // 👈 casteo
+                    line.strokeWidth(3);
+                    line.getLayer()?.batchDraw();
+                  }}
                 />
               );
             })}

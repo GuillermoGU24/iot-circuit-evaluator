@@ -55,11 +55,11 @@ export function useConnections() {
     }
   };
 
-  const validateConnections = (projectId: ProjectId): number => {
+  const validateConnections = (projectId: ProjectId) => {
     const project = projects[projectId];
     if (!project) {
       console.log("⚠️ Proyecto no encontrado:", projectId);
-      return 0;
+      return { score: 0, correct: [], incorrect: [] };
     }
 
     console.log("🔍 Validando wires:", wires);
@@ -69,9 +69,9 @@ export function useConnections() {
     );
 
     const total = project.correctConnections.length;
-    let correct = 0;
+    const correctConnections: CorrectConnection[] = [];
+    const incorrectConnections: CorrectConnection[] = [];
 
-    // Normalizar nombres de pines (quita espacios, + y -)
     const normalize = (id: string) =>
       id.replace(/\s+/g, "").replace(/[+\-]/g, "").toUpperCase();
 
@@ -100,7 +100,6 @@ export function useConnections() {
           (cTo === "GND" && isGND(toId)) ||
           (cTo === "RES1" && isResistorPin(toId));
 
-        // Verificar también en dirección inversa
         const reverseFromMatch =
           cFrom === toId ||
           (cFrom === "GND" && isGND(toId)) ||
@@ -111,31 +110,31 @@ export function useConnections() {
           (cTo === "GND" && isGND(fromId)) ||
           (cTo === "RES1" && isResistorPin(fromId));
 
-        const forwardMatch = fromMatch && toMatch;
-        const reverseMatch = reverseFromMatch && reverseToMatch;
-
-        console.log(
-          `Comparando: wire(${fromId} -> ${toId}) con conexión esperada(${cFrom} -> ${cTo})`,
-          { forwardMatch, reverseMatch }
-        );
-
-        return forwardMatch || reverseMatch;
+        return (fromMatch && toMatch) || (reverseFromMatch && reverseToMatch);
       });
 
       if (exists) {
         console.log(`✅ Conexión correcta encontrada: ${c.from} -> ${c.to}`);
-        correct++;
+        correctConnections.push(c);
       } else {
         console.log(`❌ No se encontró conexión: ${c.from} -> ${c.to}`);
+        incorrectConnections.push(c);
       }
     });
 
-    const score = Math.round((correct / total) * 100);
+    const score = Math.round((correctConnections.length / total) * 100);
+
     console.log(
-      `Puntaje calculado: ${score}% (correctas: ${correct}/${total})`
+      `Puntaje calculado: ${score}% (correctas: ${correctConnections.length}/${total})`
     );
-    return score;
+
+    return {
+      score,
+      correct: correctConnections,
+      incorrect: incorrectConnections,
+    };
   };
+
 
 const clearWires = () => setWires([]);
   useEffect(() => {
