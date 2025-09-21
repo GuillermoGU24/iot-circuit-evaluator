@@ -31,6 +31,7 @@ export default function HSR04({
         width={350}
         height={300}
         shadowBlur={4}
+        rotation={90}
         shadowColor="black"
         shadowOffset={{ x: 2, y: 2 }}
       />

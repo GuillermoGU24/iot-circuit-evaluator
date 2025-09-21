@@ -1,4 +1,4 @@
-import HC06 from "../components/electronics/HC06";
+
 
 // 📌 Tabla con offsets base de cada componente
 const COMPONENT_BASE_OFFSETS: Record<
@@ -8,8 +8,8 @@ const COMPONENT_BASE_OFFSETS: Record<
   ARDUINO: (d) => ({ x: d.width * 0.5, y: d.height * 0.1 }),
   RES1: (d) => ({ x: d.width * 0.65, y: d.height * 0.15 }),
   LED1: (d) => ({ x: d.width * 0.75, y: d.height * 0.35 }),
-  I2CPANTALLA: (d) => ({ x: d.width * 0.27, y: d.height * 0.6 }),
-  HSR04: (d) => ({ x: d.width * 0.6, y: d.height * -0.3 }),
+  I2CPANTALLA: (d) => ({ x: d.width * 0.37, y: d.height * 0.6 }),
+  HSR04: (d) => ({ x: d.width * 1.2, y: d.height * 0.1 }),
   ARDUINO2: (d) => ({ x: d.width * 0.8, y: d.height * 0.1 }),
   BOMBILLO: (d) => ({ x: d.width * 0.7, y: d.height * 0 }),
   ARDUINO3: (d) => ({ x: d.width * 0.4, y: d.height * 0.4 }),

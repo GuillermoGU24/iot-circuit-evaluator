@@ -67,10 +67,10 @@ export const i2cPantallaPins: Pin[] = [
 ];
 
 export const HSR04Pins: Pin[] = [
-  { id: "HSR04_VCC", x: 150, y: 220, componentId: "HSR04" },
-  { id: "HSR04_TRIG", x: 165, y: 220, componentId: "HSR04" },
-  { id: "HSR04_ECHO", x: 180, y: 220, componentId: "HSR04" },
-  { id: "HSR04_GND", x: 195, y: 220, componentId: "HSR04" },
+  { id: "HSR04_VCC", x: -218, y: 150, componentId: "HSR04" },
+  { id: "HSR04_TRIG", x: -218, y: 165, componentId: "HSR04" },
+  { id: "HSR04_ECHO", x: -218, y: 180, componentId: "HSR04" },
+  { id: "HSR04_GND", x: -218, y: 195, componentId: "HSR04" },
 ];
 
 export const BombilloPins: Pin[] = [

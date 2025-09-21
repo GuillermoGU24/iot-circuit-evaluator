@@ -42,14 +42,14 @@ export const projects: Record<string, Project> = {
       {
         type: "i2cPantalla",
         id: "I2CPANTALLA",
-        x: 0.27,
+        x: 0.37,
         y: 0.6,
       },
       {
         type: "HSR04",
         id: "HSR04",
-        x: 0.6,
-        y: -0.3,
+        x: 1.2,
+        y: 0.1,
       },
     ],
     correctConnections: [
