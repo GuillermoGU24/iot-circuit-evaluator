@@ -2,7 +2,7 @@
 import { useParams, useLocation } from "react-router-dom";
 import { useConnections } from "../hooks/useConnections";
 import { useState } from "react";
-import { projects, type Project, type ProjectId } from "../data/projects";
+import { projects, type ProjectId } from "../data/projects";
 import CircuitCanvas from "./CircuitsCanvas";
 import Page404 from "./Page404";
 import ReactDOM from "react-dom";
@@ -24,7 +24,8 @@ export default function CircuitPage() {
   const [validationResult, setValidationResult] = useState<{
     score: number;
     correct: { from: string; to: string }[];
-    incorrect: { from: string; to: string }[];
+    missing: { from: string; to: string }[];
+    extras: { id: string; from: { id: string }; to: { id: string } }[];
   } | null>(null);
   const navigate = useNavigate();
 
@@ -56,10 +57,10 @@ const handleValidate = () => {
     totalConnections.length
   );
 
-  if (wires.length < totalConnections.length) {
-    alert("⚠️ Faltan conexiones por completar");
-    return;
-  }
+  // if (wires.length < totalConnections.length) {
+  //   alert("⚠️ Faltan conexiones por completar");
+  //   return;
+  // }
 
   const result = validateConnections(projectId);
   setValidationResult(result);
@@ -215,7 +216,6 @@ const handleValidate = () => {
         )}
 
       {/* MODAL RESULTADO */}
-      {/* MODAL RESULTADO */}
       {finished &&
         validationResult &&
         ReactDOM.createPortal(
@@ -253,16 +253,32 @@ const handleValidate = () => {
                 </div>
               )}
 
-              {/* ❌ Incorrectas */}
-              {validationResult.incorrect.length > 0 && (
+              {/* ⚠️ Faltantes */}
+              {validationResult.missing.length > 0 && (
                 <div className="mt-6 text-left">
-                  <h3 className="font-bold text-red-600 mb-2 text-lg">
-                    ❌ Incorrectas:
+                  <h3 className="font-bold text-yellow-600 mb-2 text-lg">
+                    ⚠️ Faltantes:
                   </h3>
                   <ul className="list-disc list-inside text-gray-700 text-base space-y-1">
-                    {validationResult.incorrect.map((c, i) => (
+                    {validationResult.missing.map((c, i) => (
                       <li key={i}>
                         {c.from} → {c.to}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* ❌ Sobran */}
+              {validationResult.extras.length > 0 && (
+                <div className="mt-6 text-left">
+                  <h3 className="font-bold text-red-600 mb-2 text-lg">
+                    ❌ Conexiones incorrectas :
+                  </h3>
+                  <ul className="list-disc list-inside text-gray-700 text-base space-y-1">
+                    {validationResult.extras.map((w, i) => (
+                      <li key={i}>
+                        {w.from.id} → {w.to.id}
                       </li>
                     ))}
                   </ul>
@@ -274,7 +290,8 @@ const handleValidate = () => {
                     replace: true,
                     state: {
                       result: validationResult,
-                      projectName: projects[projectId].name, // 👈 pasamos el nombre
+                      projectName: projects[projectId].name,
+                      projectId: projectId,
                     },
                   })
                 }

@@ -85,79 +85,120 @@ export function useConnections() {
     }
   };
 
-  const validateConnections = (projectId: ProjectId) => {
-    const project = projects[projectId];
-    if (!project) {
-      console.log("⚠️ Proyecto no encontrado:", projectId);
-      return { score: 0, correct: [], incorrect: [] };
-    }
+const validateConnections = (projectId: ProjectId) => {
+  const project = projects[projectId];
+  if (!project) {
+    console.log("⚠️ Proyecto no encontrado:", projectId);
+    return { score: 0, correct: [], incorrect: [], extras: [] };
+  }
 
-    const ignoredPins = project.ignoredPins || [];
+  const ignoredPins = project.ignoredPins || [];
 
-    const totalConnections = project.correctConnections.filter(
-      (c) => !ignoredPins.includes(c.from) && !ignoredPins.includes(c.to)
-    );
+  const totalConnections = project.correctConnections.filter(
+    (c) => !ignoredPins.includes(c.from) && !ignoredPins.includes(c.to)
+  );
 
-    const total = totalConnections.length;
-    const correctConnections: CorrectConnection[] = [];
-    const incorrectConnections: CorrectConnection[] = [];
+  const total = totalConnections.length;
+  const correctConnections: CorrectConnection[] = [];
+  const missingConnections: CorrectConnection[] = [];
+  const extraConnections: Wire[] = []; // 👈 conexiones del usuario que sobran
 
-    const normalize = (id: string) =>
-      id.replace(/\s+/g, "").replace(/[+\-]/g, "").toUpperCase();
+  const normalize = (id: string) =>
+    id.replace(/\s+/g, "").replace(/[+-]/g, "").toUpperCase();
 
-    const isGND = (pinId: string) =>
-      GND_PINS.map(normalize).includes(normalize(pinId)) ||
-      normalize(pinId) === "GND";
+  const isGND = (pinId: string) =>
+    GND_PINS.map(normalize).includes(normalize(pinId)) ||
+    normalize(pinId) === "GND";
 
-    const isResistorPin = (pinId: string) =>
-      RESISTOR_PINS.map(normalize).includes(normalize(pinId)) ||
-      normalize(pinId) === "RES1";
+  const isResistorPin = (pinId: string) =>
+    RESISTOR_PINS.map(normalize).includes(normalize(pinId)) ||
+    normalize(pinId) === "RES1";
 
-    totalConnections.forEach((c: CorrectConnection) => {
-      const exists = wires.some((w) => {
-        const fromId = normalize(w.from.id);
-        const toId = normalize(w.to.id);
-        const cFrom = normalize(c.from);
-        const cTo = normalize(c.to);
+  // --- revisar correctas y faltantes ---
+  totalConnections.forEach((c: CorrectConnection) => {
+    const exists = wires.some((w) => {
+      const fromId = normalize(w.from.id);
+      const toId = normalize(w.to.id);
+      const cFrom = normalize(c.from);
+      const cTo = normalize(c.to);
 
-        const fromMatch =
-          cFrom === fromId ||
-          (cFrom === "GND" && isGND(fromId)) ||
-          (cFrom === "RES1" && isResistorPin(fromId));
+      const fromMatch =
+        cFrom === fromId ||
+        (cFrom === "GND" && isGND(fromId)) ||
+        (cFrom === "RES1" && isResistorPin(fromId));
 
-        const toMatch =
-          cTo === toId ||
-          (cTo === "GND" && isGND(toId)) ||
-          (cTo === "RES1" && isResistorPin(toId));
+      const toMatch =
+        cTo === toId ||
+        (cTo === "GND" && isGND(toId)) ||
+        (cTo === "RES1" && isResistorPin(toId));
 
-        const reverseFromMatch =
-          cFrom === toId ||
-          (cFrom === "GND" && isGND(toId)) ||
-          (cFrom === "RES1" && isResistorPin(toId));
+      const reverseFromMatch =
+        cFrom === toId ||
+        (cFrom === "GND" && isGND(toId)) ||
+        (cFrom === "RES1" && isResistorPin(toId));
 
-        const reverseToMatch =
-          cTo === fromId ||
-          (cTo === "GND" && isGND(fromId)) ||
-          (cTo === "RES1" && isResistorPin(fromId));
+      const reverseToMatch =
+        cTo === fromId ||
+        (cTo === "GND" && isGND(fromId)) ||
+        (cTo === "RES1" && isResistorPin(fromId));
 
-        return (fromMatch && toMatch) || (reverseFromMatch && reverseToMatch);
-      });
-
-      if (exists) {
-        correctConnections.push(c);
-      } else {
-        incorrectConnections.push(c);
-      }
+      return (fromMatch && toMatch) || (reverseFromMatch && reverseToMatch);
     });
 
-    const score = Math.round((correctConnections.length / total) * 100);
+    if (exists) {
+      correctConnections.push(c);
+    } else {
+      missingConnections.push(c);
+    }
+  });
 
-    return {
-      score,
-      correct: correctConnections,
-      incorrect: incorrectConnections,
-    };
+  // --- detectar extras (cables del usuario que no están en correctConnections) ---
+  wires.forEach((w) => {
+    const fromId = normalize(w.from.id);
+    const toId = normalize(w.to.id);
+
+    const matchesCorrect = totalConnections.some((c) => {
+      const cFrom = normalize(c.from);
+      const cTo = normalize(c.to);
+
+      const fromMatch =
+        cFrom === fromId ||
+        (cFrom === "GND" && isGND(fromId)) ||
+        (cFrom === "RES1" && isResistorPin(fromId));
+
+      const toMatch =
+        cTo === toId ||
+        (cTo === "GND" && isGND(toId)) ||
+        (cTo === "RES1" && isResistorPin(toId));
+
+      const reverseFromMatch =
+        cFrom === toId ||
+        (cFrom === "GND" && isGND(toId)) ||
+        (cFrom === "RES1" && isResistorPin(toId));
+
+      const reverseToMatch =
+        cTo === fromId ||
+        (cTo === "GND" && isGND(fromId)) ||
+        (cTo === "RES1" && isResistorPin(fromId));
+
+      return (fromMatch && toMatch) || (reverseFromMatch && reverseToMatch);
+    });
+
+    if (!matchesCorrect) {
+      extraConnections.push(w);
+    }
+  });
+
+  const score = Math.round((correctConnections.length / total) * 100);
+
+  return {
+    score,
+    correct: correctConnections,
+    missing: missingConnections,
+    extras: extraConnections, // 👈 cables dibujados de más
   };
+};
+
 
   const clearWires = () => setWires([]);
 

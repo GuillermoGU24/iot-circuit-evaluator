@@ -5,12 +5,17 @@ export default function FinalPage() {
   const navigate = useNavigate();
   const result = location.state?.result;
   const projectName = location.state?.projectName;
+  const projectId = location.state?.projectId;
 
   // Si alguien entra directo sin datos -> redirigir a inicio
   if (!result || !projectName) {
     navigate("/", { replace: true });
     return null;
   }
+
+  const handleRetry = () => {
+    navigate(`/circuit/${projectId}`, { state: { projectName } });
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-gray-700 text-white font-['Press_Start_2P'] p-6">
@@ -51,20 +56,44 @@ export default function FinalPage() {
           </div>
         )}
 
-        {/* ❌ Incorrectas */}
-        {result.incorrect.length > 0 && (
+        {/* ⚠️ Faltantes */}
+        {result.missing.length > 0 && (
           <div className="text-left">
-            <h3 className="font-bold text-red-400 mb-2">
-              ❌ Conexiones incorrectas:
+            <h3 className="font-bold text-yellow-400 mb-2">
+              ⚠️ Conexiones faltantes:
             </h3>
             <ul className="list-disc list-inside text-gray-200 text-sm space-y-1">
-              {result.incorrect.map((c: any, i: number) => (
+              {result.missing.map((c: any, i: number) => (
                 <li key={i}>
                   {c.from} → {c.to}
                 </li>
               ))}
             </ul>
           </div>
+        )}
+
+        {/* ❌ Sobran */}
+        {result.extras.length > 0 && (
+          <div className="text-left">
+            <h3 className="font-bold text-red-400 mb-2">
+              ❌ Conexiones incorrectas :
+            </h3>
+            <ul className="list-disc list-inside text-gray-200 text-sm space-y-1">
+              {result.extras.map((w: any, i: number) => (
+                <li key={i}>
+                  {w.from.id} → {w.to.id}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {result.score < 60 && (
+          <button
+            onClick={handleRetry}
+            className="mt-6 px-6 py-3 rounded-xl bg-yellow-500 hover:bg-yellow-600 text-black font-bold shadow-lg transition"
+          >
+            🔁 Reintentar
+          </button>
         )}
 
         <p className="text-sm text-gray-400 italic pt-6">
