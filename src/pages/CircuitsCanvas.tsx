@@ -15,6 +15,9 @@ import i2cPantalla from "../components/electronics/i2cPantalla";
 import Rele from "../components/electronics/Rele";
 import HC06 from "../components/electronics/HC06";
 import Toma from "../components/electronics/Toma";
+import Bomba from "../components/electronics/Bomba";
+import Espe32s3 from "../components/electronics/Esp32s3";
+import Humedad from "../components/electronics/Humedad";
 // Ejemplo: un nuevo componente
 
 interface CircuitCanvasProps {
@@ -37,7 +40,10 @@ const componentRegistry: Record<string, React.FC<any>> = {
   Bombillo,
   Rele,
   HC06,
-  Toma
+  Toma,
+  Bomba,
+  Espe32s3,
+  Humedad
 };
 
 export default function CircuitCanvas({

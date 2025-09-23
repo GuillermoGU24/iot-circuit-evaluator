@@ -16,6 +16,9 @@ const COMPONENT_BASE_OFFSETS: Record<
   RELE: (d) => ({ x: d.width * 0.6, y: d.height * 0.6 }),
   HC06: (d) => ({ x: d.width * 0.2, y: d.height * 0.2 }),
   TOMA: (d) => ({ x: d.width * 1, y: d.height * 0.6 }),
+  BOMBA: (d) => ({ x: d.width * 1, y: d.height * -0.1 }),
+  ESP32S3: (d) => ({ x: d.width * 0.7, y: d.height * 0 }),
+  HUMEDAD: (d) => ({ x: d.width * 0.0, y: d.height * 0.4}),
   // 👇 Aquí puedes ir agregando más componentes fácilmente
   // MOTOR1: (d) => ({ x: d.width * 0.3, y: d.height * 0.5 }),
   // DISPLAY1: (d) => ({ x: d.width * 0.2, y: d.height * 0.2 }),

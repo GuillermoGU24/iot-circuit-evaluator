@@ -112,6 +112,48 @@ export const projects: Record<string, Project> = {
     ],
     ignoredPins: ["R_NC"],
   },
+  "riego-iot": {
+    name: "Sistema de Riego IoT",
+    description: "Conectar un IoT...",
+    components: [
+      {
+        type: "Espe32s3",
+        id: "ESP32S3",
+        x: 0.7,
+        y: 0,
+      },
+      {
+        type: "Humedad",
+        id: "HUMEDAD",
+        x: 0.0,
+        y: 0.4,
+      },
+      {
+        type: "Rele",
+        id: "RELE",
+        x: 0.6,
+        y: 0.6,
+      },
+      {
+        type: "Bomba",
+        id: "BOMBA",
+        x: 1,
+        y: -0.1,
+      },
+    ],
+    correctConnections: [
+      { from: "BM_GND", to: "GND" },
+      { from: "BM_VCC", to: "R_COM" },
+      { from: "R_NO", to: "5V" },
+      { from: "R_IN", to: "D1" },
+      { from: "R_VCC", to: "3V3" },
+      { from: "R_GND", to: "GND" },
+      { from: "H_VCC", to: "3V3" },
+      { from: "H_GND", to: "GND" },
+      { from: "H_S", to: "D0" },
+    ],
+    ignoredPins: ["R_NC"],
+  },
 };
 
 

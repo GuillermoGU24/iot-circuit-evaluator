@@ -99,3 +99,35 @@ export const TomaPins: Pin[] = [
   { id: "T_VCC", x: 90, y: -91, componentId: "TOMA" },
   { id: "T_GND", x: 90, y: -110, componentId: "TOMA" },
 ];
+
+export const BombaPins: Pin[] = [
+  { id: "BM_VCC", x: -130, y: 330, componentId: "BOMBA" },
+  { id: "BM_GND", x: -120, y: 305, componentId: "BOMBA" },
+];
+
+export const HumedadPins: Pin[] = [
+  { id: "H_S", x: 190, y: -74, componentId: "HUMEDAD" },
+  { id: "H_VCC", x: 190, y: -60, componentId: "HUMEDAD" },
+  { id: "H_GND", x: 190, y: -45, componentId: "HUMEDAD" },
+];
+
+export const Esp32Pins: Pin[] = [
+  { id: "5V", x: -247, y: 199, componentId: "Esp32s3" },
+  { id: "GND1", x: -247, y: 216, componentId: "Esp32s3" },
+  { id: "GND2", x: -264, y: 216, componentId: "Esp32s3" },
+  { id: "GND3", x: -282, y: 216, componentId: "Esp32s3" },
+  { id: "3V3_1", x: -247, y: 232, componentId: "Esp32s3" },
+  { id: "3V3_2", x: -264, y: 232, componentId: "Esp32s3" },
+  { id: "3V3_3", x: -282, y: 232, componentId: "Esp32s3" },
+  { id: "Esp32_D10", x: -247, y: 249, componentId: "Esp32s3" },
+  { id: "Esp32_D9", x: -247, y: 266, componentId: "Esp32s3" },
+  { id: "Esp32_D8", x: -247, y: 282, componentId: "Esp32s3" },
+  { id: "Esp32_D7", x: -247, y: 298, componentId: "Esp32s3" },
+  { id: "Esp32_D6", x: -141, y: 298, componentId: "Esp32s3" },
+  { id: "Esp32_D5", x: -141, y: 282, componentId: "Esp32s3" },
+  { id: "Esp32_D4", x: -141, y: 266, componentId: "Esp32s3" },
+  { id: "Esp32_D3", x: -141, y: 249, componentId: "Esp32s3" },
+  { id: "Esp32_D2", x: -141, y: 232, componentId: "Esp32s3" },
+  { id: "Esp32_D1", x: -141, y: 216, componentId: "Esp32s3" },
+  { id: "Esp32_D0", x: -141, y: 199, componentId: "Esp32s3" },
+];
