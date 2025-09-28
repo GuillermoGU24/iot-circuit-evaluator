@@ -8,30 +8,28 @@ import type { Pin } from "../data/pin";
 
 type Wire = { id: string; from: Pin; to: Pin; color: string };
 
+// Colores disponibles en formato hex
 const colors = [
-  "red",
-  "blue",
-  "green",
-  "orange",
-  "purple",
-  "brown",
-  "cyan",
-  "magenta",
-  "lime",
-  "teal",
-  "indigo",
-  "violet",
-  "gold",
-  "salmon",
-  "chocolate",
-  "coral",
-  "crimson",
-  "turquoise",
-  "navy",
-  "olive",
-  "maroon",
-  "orchid",
-  "plum",
+  "#ef4444",
+  "#3b82f6",
+  "#10b981",
+  "#f97316",
+  "#8b5cf6",
+  "#eab308",
+  "#ec4899",
+  "#06b6d4",
+  "#84cc16",
+  "#6366f1",
+  "#a16207",
+  "#6b7280",
+  "#f59e0b",
+  "#14b8a6",
+  "#8b5a2b",
+  "#dc2626",
+  "#7c3aed",
+  "#059669",
+  "#ea580c",
+  "#be185d",
 ];
 
 // Lista de pines equivalentes
@@ -44,6 +42,8 @@ export function useConnections() {
   const [selectedPin, setSelectedPin] = useState<Pin | null>(null);
   const [colorIndex, setColorIndex] = useState(0);
   const [selectedWire, setSelectedWire] = useState<string | null>(null);
+  const [currentColor, setCurrentColor] = useState<string>("#ef4444"); // Color por defecto
+  const [useRandomColors, setUseRandomColors] = useState<boolean>(false); // Si usar colores aleatorios
 
   const isExclusivePin = (pinId: string) => {
     const normalized = pinId.trim().toUpperCase();
@@ -53,6 +53,19 @@ export function useConnections() {
   const isPinUsed = (pinId: string) => {
     if (!isExclusivePin(pinId)) return false;
     return wires.some((w) => w.from.id === pinId || w.to.id === pinId);
+  };
+
+  // Función para obtener un color aleatorio
+  const getRandomColor = () => {
+    return colors[Math.floor(Math.random() * colors.length)];
+  };
+
+  // Función para obtener el color a usar
+  const getWireColor = () => {
+    if (useRandomColors) {
+      return getRandomColor();
+    }
+    return currentColor;
   };
 
   const handlePinClick = (pin: Pin) => {
@@ -77,7 +90,7 @@ export function useConnections() {
           id: `${selectedPin.id}-${pin.id}-${Date.now()}`,
           from: selectedPin,
           to: pin,
-          color: colors[colorIndex % colors.length],
+          color: getWireColor(), // Usar el color seleccionado o aleatorio
         };
         setWires((prev) => [...prev, newWire]);
         setColorIndex((i) => i + 1);
@@ -229,8 +242,12 @@ export function useConnections() {
     wires,
     selectedPin,
     selectedWire,
+    currentColor,
+    useRandomColors,
     handlePinClick,
     setSelectedWire,
+    setCurrentColor,
+    setUseRandomColors,
     validateConnections,
     clearWires,
   };

@@ -15,8 +15,12 @@ export default function CircuitPage() {
     wires,
     selectedPin,
     selectedWire,
+    currentColor,
+    useRandomColors,
     handlePinClick,
     setSelectedWire,
+    setCurrentColor,
+    setUseRandomColors,
     validateConnections,
     clearWires,
   } = useConnections();
@@ -36,44 +40,56 @@ export default function CircuitPage() {
     return <Page404 />;
   }
 
-  const getTokenFromUrl = () => {
+  // ✅ Función actualizada para obtener token desde sessionStorage
+  const getToken = () => {
+    // Primero intentar desde sessionStorage
+    const tokenFromStorage = sessionStorage.getItem("moodle_token");
+    if (tokenFromStorage) {
+      return tokenFromStorage;
+    }
+
+    // Fallback: intentar desde URL (por si acaso)
     const params = new URLSearchParams(location.search);
-    return params.get("token");
+    const tokenFromUrl = params.get("token");
+
+    // Si encontramos token en URL, guardarlo en sessionStorage
+    if (tokenFromUrl) {
+      sessionStorage.setItem("moodle_token", tokenFromUrl);
+      return tokenFromUrl;
+    }
+
+    return null;
   };
 
-const handleValidate = () => {
-  const project = projects[projectId]!;
-  const ignoredPins = project.ignoredPins ?? [];
-  const totalConnections = project.correctConnections.filter(
-    (c) => !ignoredPins.includes(c.from) && !ignoredPins.includes(c.to)
-  );
+  const handleValidate = () => {
+    const project = projects[projectId]!;
+    const ignoredPins = project.ignoredPins ?? [];
+    const totalConnections = project.correctConnections.filter(
+      (c) => !ignoredPins.includes(c.from) && !ignoredPins.includes(c.to)
+    );
 
-  console.log("👉 wires:", wires);
-  console.log("👉 totalConnections:", totalConnections);
-  console.log(
-    "👉 wires.length:",
-    wires.length,
-    " totalConnections.length:",
-    totalConnections.length
-  );
+    console.log("👉 wires:", wires);
+    console.log("👉 totalConnections:", totalConnections);
+    console.log(
+      "👉 wires.length:",
+      wires.length,
+      " totalConnections.length:",
+      totalConnections.length
+    );
 
-  // if (wires.length < totalConnections.length) {
-  //   alert("⚠️ Faltan conexiones por completar");
-  //   return;
-  // }
-
-  const result = validateConnections(projectId);
-  setValidationResult(result);
-  setShowConfirm(true);
-};
+    const result = validateConnections(projectId);
+    setValidationResult(result);
+    setShowConfirm(true);
+  };
 
   const handleFinish = async () => {
     if (!validationResult) return;
 
-    setFinished(true); // 👉 ahora sí mostramos nota y errores
+    setFinished(true);
     setShowConfirm(false);
 
-    const token = getTokenFromUrl();
+    // ✅ Usar la función actualizada
+    const token = getToken();
     if (token) {
       try {
         const response = await fetch(
@@ -95,6 +111,8 @@ const handleValidate = () => {
       } catch (error) {
         console.error("❌ Error en la petición:", error);
       }
+    } else {
+      console.warn("⚠️ No se encontró token para enviar la calificación");
     }
   };
 
@@ -118,6 +136,10 @@ const handleValidate = () => {
             handlePinClick={handlePinClick}
             setSelectedWire={setSelectedWire}
             clearWires={clearWires}
+            currentColor={currentColor}
+            setCurrentColor={setCurrentColor}
+            useRandomColors={useRandomColors}
+            setUseRandomColors={setUseRandomColors}
           />
         </div>
 
