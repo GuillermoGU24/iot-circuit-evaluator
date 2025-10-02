@@ -31,7 +31,8 @@ export const projects: Record<string, Project> = {
   },
   "metro-i2c": {
     name: "Metro Con Pantalla I2C",
-    description: "Conectar un sensor LM35 al Arduino UNO...",
+    description:
+      "Construir el circuito denominado “Metro con pantalla I2C” utilizando la placa Arduino UNO. La pantalla I2C debe alimentarse con 5V y GND de la placa, conectando además la línea SCL al pin analógico A5 y la línea SDA al pin analógico A4. El sensor ultrasónico se incorpora al montaje conectando el pin Echo al puerto digital 9 y el pin Trigger al puerto digital 10, garantizando así la comunicación correcta entre los componentes.",
     components: [
       {
         type: "ArduinoUno",
@@ -65,7 +66,8 @@ export const projects: Record<string, Project> = {
   },
   "bombillo-programable": {
     name: "Bombillo Programable",
-    description: "Conectar un bombillo programable al Arduino UNO...",
+    description:
+      "Construir el circuito denominado “Bombillo Programable” utilizando la placa Arduino UNO. Para la comunicación inalámbrica se debe integrar el módulo Bluetooth HC-06, conectando su pin TXD al puerto digital 3 y su pin RXD al puerto digital 2 de la placa, mientras que sus pines de alimentación deben adecuarse al sistema de 5V. En el control de potencia se emplea un relé, conectando su pin de señal IN al puerto digital 9 del Arduino. La salida del relé debe vincularse de modo que el contacto normalmente abierto (NO) se conecte con la alimentación del bombillo y el común (COM) se derive hacia la toma de corriente. Finalmente, se debe garantizar la correcta conexión de tierra entre el bombillo y la toma, asegurando el cierre del circuito.",
     components: [
       {
         type: "ArduinoUno",
@@ -114,7 +116,8 @@ export const projects: Record<string, Project> = {
   },
   "riego-iot": {
     name: "Sistema de Riego IoT",
-    description: "Conectar un IoT...",
+    description:
+      "Construir el circuito denominado “Sistema de Riego IoT” empleando la placa ESP32-S3 como controlador principal. El sensor de humedad de suelo debe integrarse al sistema conectando su salida de señal (S) al pin digital 0 del ESP32-S3, mientras que la alimentación se establece con 3.3V y GND. Para el control de la bomba de agua se utiliza un relé, conectando su pin de entrada (IN) al pin digital 1 de la placa, alimentándolo con 3.3V y GND. La salida del relé se configura de modo que el contacto normalmente abierto (NO) reciba los 5V de la fuente, mientras que el común (COM) se dirige hacia la bomba, la cual debe cerrarse correctamente con su conexión a tierra (GND).",
     components: [
       {
         type: "Espe32s3",

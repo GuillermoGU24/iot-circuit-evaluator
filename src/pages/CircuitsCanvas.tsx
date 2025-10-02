@@ -413,7 +413,7 @@ export default function CircuitCanvas({
                   backgroundColor: useRandomColors ? "#888" : currentColor,
                 }}
               ></div>
-              <span className="text-sm font-medium text-gray-700">
+              <span className="text-sm font-medium text-gray-700 cursor-pointer">
                 {useRandomColors ? "Aleatorio" : "Color"}
               </span>
               <svg
@@ -577,7 +577,7 @@ export default function CircuitCanvas({
                   </div>
                   <button
                     onClick={() => setShowHelp(false)}
-                    className="text-white/80 hover:text-white hover:bg-white/20 text-2xl font-bold w-10 h-10 flex items-center justify-center rounded-full transition-all duration-200"
+                    className="cursor-pointer text-white/80 hover:text-white hover:bg-white/20 text-2xl font-bold w-10 h-10 flex items-center justify-center rounded-full transition-all duration-200"
                   >
                     ×
                   </button>
@@ -841,7 +841,7 @@ export default function CircuitCanvas({
                 <div className="flex justify-center">
                   <button
                     onClick={() => setShowHelp(false)}
-                    className="px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"
+                    className="cursor-pointer px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"
                   >
                     ¡Entendido! Comenzar a crear
                   </button>
