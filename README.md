@@ -17,11 +17,7 @@
 
 ## 📖 Descripción
 
-**Chispa** es un simulador de circuitos electrónicos desarrollado como proyecto de tesis, diseñado para facilitar el aprendizaje práctico de electrónica mediante una interfaz gráfica intuitiva e interactiva. La herramienta permite a los estudiantes crear conexiones entre componentes electrónicos, validar sus circuitos en tiempo real y recibir retroalimentación inmediata sobre la correctitud de sus diseños.
-
-### 🎯 Objetivo
-
-Proporcionar una plataforma educativa que combine la teoría y la práctica de circuitos electrónicos, permitiendo a los usuarios experimentar sin riesgo de dañar componentes físicos, mientras desarrollan habilidades fundamentales en electrónica.
+**Chispa** es un simulador de circuitos electrónicos desarrollado como validador para el proyecto de tesis **Implementación de un curso en la aplicación de tecnologías IoT para la Universidad Francisco de Paula Santander**, diseñado para facilitar el aprendizaje práctico de electrónica mediante una interfaz gráfica intuitiva e interactiva. La herramienta permite a los estudiantes crear conexiones entre componentes electrónicos, validar sus circuitos en tiempo real y recibir retroalimentación inmediata sobre la correctitud de sus diseños.
 
 ---
 
