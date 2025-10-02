@@ -1,69 +1,78 @@
-# React + TypeScript + Vite
+# Simulador Chispa
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Herramienta interactiva para validación de circuitos electrónicos IoT**
 
-Currently, two official plugins are available:
+## Descripción
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Simulador Chispa es una plataforma educativa desarrollada para la tesis "Implementación de un curso en la aplicación de tecnologías IoT para la Universidad Francisco de Paula Santander". Permite a estudiantes crear y validar circuitos electrónicos de forma interactiva, proporcionando retroalimentación automática sobre la correctitud de las conexiones realizadas.
 
-## Expanding the ESLint configuration
+## Características Principales
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Canvas interactivo con zoom, paneo y controles intuitivos
+- Animaciones fluidas al crear conexiones entre componentes
+- Sistema de validación automática de circuitos contra soluciones esperadas
+- Integración con Moodle para envío automático de calificaciones
+- Selector de colores con modo específico y aleatorio para cables
+- Componentes IoT: Arduino, ESP32, sensores, actuadores y módulos
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Tecnologías
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+| Tecnología | Versión | Propósito |
+|-----------|---------|-----------|
+| React | 19.1.1 | Framework UI |
+| TypeScript | 5.8.3 | Tipado estático |
+| Vite | 7.1.2 | Build tool |
+| React Konva | 19.0.7 | Renderizado canvas |
+| React Router | 7.8.2 | Navegación |
+| Tailwind CSS | 4.1.12 | Estilos |
+| Framer Motion | 12.23.12 | Animaciones |
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Instalación
+```bash
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Uso
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Seleccionar proyecto de circuito desde el menú
+Hacer clic en un pin para iniciar la conexión (se resalta en verde)
+Hacer clic en el pin destino para completar la conexión
+Validar circuito cuando esté completo para obtener calificación automática
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Controles
+AcciónControlMover vistaArrastrar canvasZoomScroll o botones +/-Resetear vistaBotón de resetEliminar cableSeleccionar + DeleteLimpiar todosBotón de limpiar
+Sistema de Validación
+El simulador compara las conexiones realizadas contra una solución esperada, proporcionando:
+
+Conexiones correctas - Muestra cuáles están bien hechas
+Conexiones faltantes - Indica qué conexiones faltan por realizar
+Conexiones incorrectas - Señala conexiones que no deberían existir
+
+La puntuación final se calcula como: (correctas / total esperadas) × 100
+Estructura del Proyecto
+src/
+├── components/
+│   ├── electronics/      # Componentes (Arduino, LED, sensores, etc.)
+│   └── CircuitsCanvas.tsx
+├── pages/
+│   ├── CircuitPage.tsx   # Página principal del simulador
+│   └── FinalPage.tsx     # Página de resultados
+├── hooks/
+│   └── useConnections.ts # Lógica de gestión de conexiones
+├── data/
+│   └── projects.ts       # Definición de proyectos y validaciones
+└── utils/
+Componentes Disponibles
+
+Arduino Uno / ESP32-S3
+LEDs y resistencias
+Sensor ultrasónico HSR04
+Sensor de humedad
+Módulo Bluetooth HC-06
+Display I2C
+Relé y bombillo
+Bomba de agua
+
+Autor
+Proyecto de tesis - Universidad Francisco de Paula Santander
+Tesis: Implementación de un curso en la aplicación de tecnologías IoT
+Licencia
+MIT License
