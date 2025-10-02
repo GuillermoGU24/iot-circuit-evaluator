@@ -279,21 +279,6 @@ Este proyecto fue desarrollado como trabajo de tesis. Los términos de uso será
 
 ---
 
-## 👨‍💻 Autor
-
-**Proyecto de Tesis**  
-Simulador de Circuitos Electrónicos Chispa
-
----
-
-## 🙏 Agradecimientos
-
-- A los profesores y tutores que guiaron este proyecto
-- A la comunidad de React y TypeScript por las herramientas increíbles
-- A todos los estudiantes que probarán y darán feedback sobre Chispa
-
----
-
 <div align="center">
 
 **⚡ Desarrollado con pasión por la educación en electrónica ⚡**
