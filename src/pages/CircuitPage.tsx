@@ -379,7 +379,7 @@ export default function CircuitPage() {
                     },
                   })
                 }
-                className="mt-8 px-10 py-5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-lg text-lg font-semibold transition"
+                className="mt-8 cursor-pointer px-10 py-5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-lg text-lg font-semibold transition"
               >
                 OK
               </button>
