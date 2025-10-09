@@ -102,7 +102,6 @@ export function useConnections() {
  const validateConnections = (projectId: ProjectId) => {
    const project = projects[projectId];
    if (!project) {
-     console.log("⚠️ Proyecto no encontrado:", projectId);
      return { score: 0, correct: [], missing: [], extras: [] };
    }
 

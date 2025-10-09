@@ -68,15 +68,6 @@ export default function CircuitPage() {
       (c) => !ignoredPins.includes(c.from) && !ignoredPins.includes(c.to)
     );
 
-    console.log("👉 wires:", wires);
-    console.log("👉 totalConnections:", totalConnections);
-    console.log(
-      "👉 wires.length:",
-      wires.length,
-      " totalConnections.length:",
-      totalConnections.length
-    );
-
     const result = validateConnections(projectId);
     setValidationResult(result);
     setShowConfirm(true);
