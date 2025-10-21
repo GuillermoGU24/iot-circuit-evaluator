@@ -78,22 +78,25 @@ export default function CircuitPage() {
 
     setFinished(true);
     setShowConfirm(false);
+    const apiUrl = import.meta.env.VITE_API_URL;
 
-    // ✅ Usar la función actualizada
+    if (!apiUrl) {
+      alert(
+        "⚠️ No se encontró la variable de conexion con Backend, Contacta al administrador."
+      );
+    }
+
     const token = getToken();
     if (token) {
       try {
-        const response = await fetch(
-          "https://pruebamoodle-production.up.railway.app/api/calificar_moodle",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              token,
-              nota: validationResult.score / 100,
-            }),
-          }
-        );
+        const response = await fetch(`${apiUrl}/calificar_moodle`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            token,
+            nota: validationResult.score / 100,
+          }),
+        });
         if (!response.ok) {
           console.error("❌ Error al enviar la nota:", response.statusText);
         } else {
