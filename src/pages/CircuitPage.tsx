@@ -78,12 +78,11 @@ export default function CircuitPage() {
 
     setFinished(true);
     setShowConfirm(false);
-    const apiUrl = import.meta.env.VITE_API_URL;
+    let apiUrl = import.meta.env.VITE_API_URL;
 
     if (!apiUrl) {
-      alert(
-        "⚠️ No se encontró la variable de conexion con Backend, Contacta al administrador."
-      );
+      apiUrl = "https://api.iot.applab.ufps.edu.co/api"
+      console.warn("⚠️ VITE_API_URL no está definido. Usando URL por defecto:", apiUrl);
     }
 
     const token = getToken();
@@ -99,6 +98,7 @@ export default function CircuitPage() {
         });
         if (!response.ok) {
           console.error("❌ Error al enviar la nota:", response.statusText);
+          alert("Error al enviar la nota. Es posible que su tiempo se agotara o no ingresó correctamente desde Moodle. Si el error persiste, por favor, contacte con un administrador.");
         } else {
           console.log("✅ Nota enviada correctamente");
         }
